@@ -101,6 +101,15 @@ class Parsedown
 
     protected $strictMode;
 
+    function setAutoHeaderIDs($enable)
+    {
+        $this->autoHeaderIDs = (bool) $enable;
+
+        return $this;
+    }
+
+    protected $autoHeaderIDs = false;
+
     protected $safeLinksWhitelist = array(
         'http://',
         'https://',
@@ -564,6 +573,10 @@ class Parsedown
                 )
             ),
         );
+
+        if ($this->autoHeaderIDs) {
+            $Block['element']['attributes'] = array('id' => $this->autoIncrementId());
+        }
 
         return $Block;
     }
@@ -1991,4 +2004,15 @@ class Parsedown
                    'var', 'span',
                    'wbr', 'time',
     );
+
+    #
+    # Auto Increment Id
+    #
+
+    protected $autoIncrement = 0;
+
+    protected function autoIncrementId() {
+        $this->autoIncrement++;
+        return $this->autoIncrement;
+    }
 }
